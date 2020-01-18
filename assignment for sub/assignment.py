@@ -11,17 +11,18 @@ def check_valid_input(letter_guessed, old_letters_guessed):
 #the second and thred condution
     pattern = re.compile('[^A-Za-z]+')	
     if(len(letter_guessed) > 1) and (pattern.search(letter_guessed)):
-        print('E3')
+        print('E3 : Non-English character and letter string containing more than one character ')
         return False
 #If the player entered a letter string containing more than one character, print the string "E1".
     elif(len(letter_guessed) > 1):
-        print('E1')
+        print('E1 : Letter string containing more than one character  ')
         return False
 #If the player has entered a non-English character check by regular expression print the string "E2".
     elif (pattern.match(letter_guessed)):
-        print("E2")
+        print("E2 : Non-English character ")
         return False
     elif (letter_guessed in old_letters_guessed):
+        print(letter_guessed.lower() + ' : Already guessing ')
         return False
     else:
         print(letter_guessed.lower())
@@ -52,11 +53,13 @@ def show_hidden_word(secret_word, old_letters_guessed):
                 show_hidden = "".join(temp_string)
     return show_hidden 
 		    
-def check_win(secret_word, old_letters_guessed):
-    player_guess = show_hidden_word(secret_word, old_letters_guessed)		
-    if(player_guess.replace(" ", "") in secret_word.replace(" ", "")):
-        return True,player_guess
-    return False,player_guess
+
+def check_win(secret_word, old_letters_guessed): 
+    for elem_a in list(secret_word): 
+        if elem_a not in old_letters_guessed :
+            return False   
+    return True
+    
 	
 def print_function(word_path = 'c:', index_word = -1, MAX_TRIES = 7, old_letters_guessed = 'X', player_guess = 'none'):
     hangman_text.print_hangman()
@@ -97,9 +100,13 @@ def main():
             letter_guessed_by_player = input("Please Guess a letter: ")
             letter_guessed_by_player_lowerLitr = letter_guessed_by_player.lower()
             legail = try_update_letter_guessed(letter_guessed_by_player_lowerLitr,letters_guessed)
-        player_guess = show_hidden_word(secret_word, old_letters_guessed)
-        i=i+1
-        game_over = game_over + 1
+        player_guess = show_hidden_word(secret_word, letters_guessed)
+        result = check_win(secret_word, letters_guessed)
+        if(result == False):
+            i=i+1
+            game_over = game_over + 1
+        else:
+           break 
         os.system('cls')
         print_function(word_path, index_word, MAX_TRIES, letters_guessed, player_guess)
     word_typed_by_player = input("Please enter a word: ")
