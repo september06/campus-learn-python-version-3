@@ -9,13 +9,19 @@ from hangman_print import hangman_print
 
 def choose_word(file_path, index):
     MY_SPACE = " "
-    data = []
+    different_data = []
+    all_data = []	
     words_in_file = open(file_path, "r")
-    for row in words_in_file:
+    for row in words_in_file:        
         for word in row.split(MY_SPACE):
-            if word not in data:
-                data.append(word)
-    print(data)		
+            all_data.append(word)   
+            if word not in different_data:
+                different_data.append(word)
+    number_of_DWords = len(different_data)
+    number_of_AWords = len(all_data)
+    amount_and_word = (different_data, all_data[(index-1)%number_of_AWords])
+    return amount_and_word
+    		
 def check_valid_input(letter_guessed, old_letters_guessed):
 #the second and thred condution
     pattern = re.compile('[^A-Za-z]+')	
