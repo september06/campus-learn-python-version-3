@@ -7,6 +7,15 @@ import os
 from hangman_text import hangman_text
 from hangman_print import hangman_print
 
+def choose_word(file_path, index):
+    MY_SPACE = " "
+    data = []
+    words_in_file = open(file_path, "r")
+    for row in words_in_file:
+        for word in row.split(MY_SPACE):
+            if word not in data:
+                data.append(word)
+    print(data)		
 def check_valid_input(letter_guessed, old_letters_guessed):
 #the second and thred condution
     pattern = re.compile('[^A-Za-z]+')	
@@ -89,6 +98,7 @@ def main():
     hangman_print_state = 0
     print(MAX_TRIES)
     word_path = input("Please Enter Docminet Path : ")
+    choose_word(word_path,5)
     index_word = input("Please Enter index for word in file :  ")
     while (game_over != MAX_TRIES):
         hangman_print_doll[hangman_print_state]()
