@@ -1,7 +1,24 @@
 #the Situations of the hangman :
-#first one :
+
 class hangman_print:
     @staticmethod
+    def hangman_print0():
+        print("""
+            h==y====x
+            d y     |
+            dy      |
+            d       |
+            d       |
+            d      (_)
+            d       
+            d
+            d
+            d 
+         +++m+++ """)
+
+
+#first one :
+   @staticmethod
     def hangman_print1():
         print("""
             h==y====x

@@ -72,6 +72,7 @@ def print_function(word_path = 'c:', index_word = -1, MAX_TRIES = 7, old_letters
 
 def main():
     hangman_print_doll	= {
+	    0: hangman_print.hangman_print0,
         1: hangman_print.hangman_print1,
         2: hangman_print.hangman_print2,
         3: hangman_print.hangman_print3,
@@ -85,12 +86,12 @@ def main():
     game_over = 0 # counter for fieal gusses
     letters_guessed = []
     secret_word = "llwl"
-    i=1
+    hangman_print_state = 0
     print(MAX_TRIES)
     word_path = input("Please Enter Docminet Path : ")
     index_word = input("Please Enter index for word in file :  ")
     while (game_over != MAX_TRIES):
-        hangman_print_doll[i]()
+        hangman_print_doll[hangman_print_state]()
         letter_guessed_by_player = input("Please Guess a letter: ")
         letter_guessed_by_player_lowerLitr = letter_guessed_by_player.lower()
         print(letter_guessed_by_player_lowerLitr)
@@ -102,13 +103,14 @@ def main():
             legail = try_update_letter_guessed(letter_guessed_by_player_lowerLitr,letters_guessed)
         player_guess = show_hidden_word(secret_word, letters_guessed)
         result = check_win(secret_word, letters_guessed)
-        if(result == False):
-            i=i+1
-            game_over = game_over + 1
-        else:
-           break 
+        if(result == True):
+            break
+        elif (letter_guessed_by_player not in secret_word):
+            hangman_print_state = hangman_print_state + 1
+            game_over = game_over + 1		   
         os.system('cls')
         print_function(word_path, index_word, MAX_TRIES, letters_guessed, player_guess)
+    hangman_print_doll[7]()
     word_typed_by_player = input("Please enter a word: ")
     print("_ " * len(word_typed_by_player))
     input("please press enter to exit")
