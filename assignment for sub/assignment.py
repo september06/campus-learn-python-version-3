@@ -19,7 +19,8 @@ def choose_word(file_path, index):
                 different_data.append(word)
     number_of_DWords = len(different_data)
     number_of_AWords = len(all_data)
-    amount_and_word = (different_data, all_data[(index-1)%number_of_AWords])
+    amount_and_word = (number_of_DWords, all_data[(int(index)-1)%number_of_AWords])
+    words_in_file.close()
     return amount_and_word
     		
 def check_valid_input(letter_guessed, old_letters_guessed):
@@ -76,13 +77,14 @@ def check_win(secret_word, old_letters_guessed):
     return True
     
 	
-def print_function(word_path = 'c:', index_word = -1, MAX_TRIES = 7, old_letters_guessed = 'X', player_guess = 'none'):
+def print_function(word_path = 'c:', index_word = -1, MAX_TRIES = 7, old_letters_guessed = 'X', player_guess = 'none',num_of_tries = 7 ):
     hangman_text.print_hangman()
     print(MAX_TRIES)
     print("Please Enter Docminet Path : " + word_path )
     print("Please Enter index for word in file :  " + index_word)
     print('guessed letters until now :')
     print( ' =' + '='*len(old_letters_guessed)*5 + '\n|| ' + ' -> '.join(sorted(old_letters_guessed))+ ' ||\n' + ' =' + '='*5*len(old_letters_guessed)) 
+    print( "===>you still have [ %d ] tries<=== " % (num_of_tries))
     print ('guessed letters until now  :' + player_guess)
 
 def main():
@@ -98,15 +100,17 @@ def main():
     }					
     hangman_text.print_hangman()
     MAX_TRIES = 7 #random.randint(5, 10)
-    game_over = 0 # counter for fieal gusses
+    num_of_tries = 0 # counter for fieal gusses
     letters_guessed = []
-    secret_word = "llwl"
     hangman_print_state = 0
     print(MAX_TRIES)
     word_path = input("Please Enter Docminet Path : ")
-    choose_word(word_path,5)
     index_word = input("Please Enter index for word in file :  ")
-    while (game_over != MAX_TRIES):
+    tuple_of_amount_word = choose_word(word_path , index_word)
+    print(tuple_of_amount_word)
+    secret_word = tuple_of_amount_word[1]
+    print ('guesse the word : ' + len(secret_word)*'_ ')
+    while (num_of_tries != MAX_TRIES):
         hangman_print_doll[hangman_print_state]()
         letter_guessed_by_player = input("Please Guess a letter: ")
         letter_guessed_by_player_lowerLitr = letter_guessed_by_player.lower()
@@ -123,13 +127,22 @@ def main():
             break
         elif (letter_guessed_by_player not in secret_word):
             hangman_print_state = hangman_print_state + 1
-            game_over = game_over + 1		   
+            num_of_tries = num_of_tries + 1		   
         os.system('cls')
-        print_function(word_path, index_word, MAX_TRIES, letters_guessed, player_guess)
-    hangman_print_doll[7]()
-    word_typed_by_player = input("Please enter a word: ")
-    print("_ " * len(word_typed_by_player))
-    input("please press enter to exit")
+        print_function(word_path, index_word, MAX_TRIES, letters_guessed, player_guess,MAX_TRIES-num_of_tries)
+    if(result == True):
+        os.system('cls')
+        hangman_text.print_hangman()
+        print('YOU WIN') 
+    else:
+        os.system('cls')
+        hangman_text.print_hangman()
+        print('YOU Lost')
+        print('THE SECRET WORD WAS [ ' + secret_word + ' ] AND YOUR GUESSED WAS  [ ' + player_guess + "]")
+        hangman_print_doll[7]()
+		
+    input("DO YOU WANT TO PLAY AGINE ?? [Y\\N] ")
+	
         
 	
 if __name__ == "__main__":
