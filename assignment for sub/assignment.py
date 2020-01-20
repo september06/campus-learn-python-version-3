@@ -88,60 +88,72 @@ def print_function(word_path = 'c:', index_word = -1, MAX_TRIES = 7, old_letters
     print ('guessed letters until now  :' + player_guess)
 
 def main():
-    hangman_print_doll	= {
-	    0: hangman_print.hangman_print0,
-        1: hangman_print.hangman_print1,
-        2: hangman_print.hangman_print2,
-        3: hangman_print.hangman_print3,
-        4: hangman_print.hangman_print4,
-        5: hangman_print.hangman_print5,
-        6: hangman_print.hangman_print6,
-        7: hangman_print.hangman_print7
-    }					
-    hangman_text.print_hangman()
-    MAX_TRIES = 7 #random.randint(5, 10)
-    num_of_tries = 0 # counter for fieal gusses
-    letters_guessed = []
-    hangman_print_state = 0
-    print(MAX_TRIES)
-    word_path = input("Please Enter Docminet Path : ")
-    index_word = input("Please Enter index for word in file :  ")
-    tuple_of_amount_word = choose_word(word_path , index_word)
-    print(tuple_of_amount_word)
-    secret_word = tuple_of_amount_word[1]
-    print ('guesse the word : ' + len(secret_word)*'_ ')
-    while (num_of_tries != MAX_TRIES):
-        hangman_print_doll[hangman_print_state]()
-        letter_guessed_by_player = input("Please Guess a letter: ")
-        letter_guessed_by_player_lowerLitr = letter_guessed_by_player.lower()
-        print(letter_guessed_by_player_lowerLitr)
-        legail = try_update_letter_guessed(letter_guessed_by_player_lowerLitr, letters_guessed)
-        while(legail == False ):
-            print('====>illegail input please try agine<====')
+    while(1):
+        hangman_print_doll	= {
+	        0: hangman_print.hangman_print0,
+            1: hangman_print.hangman_print1,
+            2: hangman_print.hangman_print2,
+            3: hangman_print.hangman_print3,
+            4: hangman_print.hangman_print4,
+            5: hangman_print.hangman_print5,
+            6: hangman_print.hangman_print6,
+            7: hangman_print.hangman_print7
+        }					
+        hangman_text.print_hangman()
+        MAX_TRIES = 7 #random.randint(5, 10)
+        num_of_tries = 0 # counter for fieal gusses
+        letters_guessed = []
+        hangman_print_state = 0
+        print(MAX_TRIES)
+        word_path = input("Please Enter Docminet Path : ")
+        index_word = input("Please Enter index for word in file :  ")
+        tuple_of_amount_word = choose_word(word_path , index_word)
+        print(tuple_of_amount_word)
+        secret_word = tuple_of_amount_word[1]
+        print ('guesse the word : ' + len(secret_word)*'_ ')
+        while (num_of_tries != MAX_TRIES):
+            hangman_print_doll[hangman_print_state]()
             letter_guessed_by_player = input("Please Guess a letter: ")
             letter_guessed_by_player_lowerLitr = letter_guessed_by_player.lower()
-            legail = try_update_letter_guessed(letter_guessed_by_player_lowerLitr,letters_guessed)
-        player_guess = show_hidden_word(secret_word, letters_guessed)
-        result = check_win(secret_word, letters_guessed)
+            print(letter_guessed_by_player_lowerLitr)
+            legail = try_update_letter_guessed(letter_guessed_by_player_lowerLitr, letters_guessed)
+            while(legail == False ):
+                print('====>illegail input please try agine<====')
+                letter_guessed_by_player = input("Please Guess a letter: ")
+                letter_guessed_by_player_lowerLitr = letter_guessed_by_player.lower()
+                legail = try_update_letter_guessed(letter_guessed_by_player_lowerLitr,letters_guessed)
+            player_guess = show_hidden_word(secret_word, letters_guessed)
+            result = check_win(secret_word, letters_guessed)
+            if(result == True):
+                break
+            elif (letter_guessed_by_player not in secret_word):
+                hangman_print_state = hangman_print_state + 1
+                num_of_tries = num_of_tries + 1		   
+            os.system('cls')
+            print_function(word_path, index_word, MAX_TRIES, letters_guessed, player_guess, MAX_TRIES-num_of_tries)
         if(result == True):
-            break
-        elif (letter_guessed_by_player not in secret_word):
-            hangman_print_state = hangman_print_state + 1
-            num_of_tries = num_of_tries + 1		   
-        os.system('cls')
-        print_function(word_path, index_word, MAX_TRIES, letters_guessed, player_guess,MAX_TRIES-num_of_tries)
-    if(result == True):
-        os.system('cls')
-        hangman_text.print_hangman()
-        print('YOU WIN') 
-    else:
-        os.system('cls')
-        hangman_text.print_hangman()
-        print('YOU Lost')
-        print('THE SECRET WORD WAS [ ' + secret_word + ' ] AND YOUR GUESSED WAS  [ ' + player_guess + "]")
-        hangman_print_doll[7]()
+            os.system('cls')
+            hangman_text.print_hangman()
+            print('YOU WIN') 
+        else:
+            os.system('cls')
+            hangman_text.print_hangman()
+            print('YOU Lost')
+            print('THE SECRET WORD WAS [ ' + secret_word + ' ] AND YOUR GUESSED WAS  [ ' + player_guess + "]")
+            hangman_print_doll[7]()
 		
-    input("DO YOU WANT TO PLAY AGINE ?? [Y\\N] ")
+        more_round = input("DO YOU WANT TO PLAY AGINE ?? [Y\\N] ")
+        if (more_round == 'n' or more_round =='N'):
+            print("""
+			******************************************************
+			***** GOOD BYE, WE WILL BY HAPPY TO SEE YOU AGINE ****
+			******************************************************	
+			""")
+            input("please press enter to exit... ")
+            break
+        else:
+            os.system('cls') 
+            
 	
         
 	
