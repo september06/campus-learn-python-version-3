@@ -8,6 +8,10 @@ from hangman_text import hangman_text
 from hangman_print import hangman_print
 
 def choose_word(file_path, index):
+    """
+    A boolean function that returns true if all the letters that make up the secret word are included in the list of letters the user guessed.
+    Otherwise, the function returns false.
+    """
     MY_SPACE = " "
     different_data = []
     all_data = []	
@@ -57,6 +61,11 @@ def try_update_letter_guessed(letter_guessed, old_letters_guessed):
             		
 					
 def show_hidden_word(secret_word, old_letters_guessed):
+    """
+    This is a function that returns a string consisting of letters and underscores. 
+    The string displays the letters from the old_letters_guessed list that are in the secret_word string in their respective positions, 
+    and the rest of the letters in the string (which the player has not yet guessed) as underscores.
+    """
     show_hidden = '_ ' * len(secret_word)
     for i in range(len(secret_word)):
        if secret_word[i] == " ":
@@ -71,6 +80,16 @@ def show_hidden_word(secret_word, old_letters_guessed):
 		    
 
 def check_win(secret_word, old_letters_guessed): 
+    """
+    A boolean function that returns true if all the letters that make up the secret word are included in the list of letters the user guessed.
+    therwise, the function returns false.
+    :param secret_word : That's the word the user has to guess .
+    :param old_letters_guessed : The list holds the letters the player has guessed so far.
+    :type secret_word : string .
+    :type old_letters_guessed : list .
+    :return : TRUE \ FALSE.
+    :return type : boolean.
+    """
     for elem_a in list(secret_word): 
         if elem_a not in old_letters_guessed :
             return False   
