@@ -139,7 +139,7 @@ def print_function(word_path = 'c:', index_word = -1, MAX_TRIES = 7, old_letters
 	:param word_path : That's the word the user has to guess .
     :param old_letters_guessed : The list holds the letters the player has guessed so far.
 	:param index : index of word in file.
-	:param MAX_TRIES : max tries.
+	:param MAX_TRIES : index of word in file.
 	:param player_guess : user so correct gusse so fare.
 	:param num_of_tries : The number represents the number of failed attempts by the user so far.
 	:type word_path : string .
@@ -181,17 +181,24 @@ def main():
         word_path = input("Please Enter Docminet Path by using [\\\\] between folders : ")
         index_word = input("Please Enter index for word in file :  ")
         tuple_of_amount_word = choose_word(word_path , index_word)
-        print(tuple_of_amount_word + "<===== ||  this row for the checker to see what the function returns is correctly and it will delete the next iteration|| ")  # for checker
+        print( tuple_of_amount_word ) # for the checker
+        print("^^^^^^ <== this row for the checker to see what the function returns is correctly and it will delete the next iteration||")  # for checker
         secret_word = tuple_of_amount_word[1]
         print ('guesse the word : ' + len(secret_word)*'_ ')
         while (num_of_tries != MAX_TRIES):
             hangman_print_doll[hangman_print_state]()
-            letter_guessed_by_player = input("Please Guess a letter: ")
+            while True :              # in case user insert empty input 
+                    letter_guessed_by_player = input("Please Guess a letter: ")
+                    if letter_guessed_by_player :
+                        break		
             letter_guessed_by_player_lowerLitr = letter_guessed_by_player.lower()
             legail = try_update_letter_guessed(letter_guessed_by_player_lowerLitr, letters_guessed)
             while(legail == False ):
                 print('====>illegail input please try agine<====')
-                letter_guessed_by_player = input("Please Guess a letter: ")
+                while True :          # in case user insert empty input 
+                    letter_guessed_by_player = input("Please Guess a letter: ")
+                    if letter_guessed_by_player :
+                        break		
                 letter_guessed_by_player_lowerLitr = letter_guessed_by_player.lower()
                 legail = try_update_letter_guessed(letter_guessed_by_player_lowerLitr,letters_guessed)
             player_guess = show_hidden_word(secret_word, letters_guessed)
@@ -206,7 +213,27 @@ def main():
         if(result == True):
             os.system('cls')
             hangman_text.print_hangman()
-            print('YOU WIN') 
+            print(""" 
+					====================================
+					||     Congratulations,YOU WIN   ||
+					===================================""")
+            print("""
+					░░░░░░░░░░░░░░░░░░░░░░█████████
+					░░███████░░░░░░░░░░███▒▒▒▒▒▒▒▒███
+					░░█▒▒▒▒▒▒█░░░░░░░███▒▒▒▒▒▒▒▒▒▒▒▒▒███
+					░░░█▒▒▒▒▒▒█░░░░██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██
+					░░░░█▒▒▒▒▒█░░░██▒▒▒▒▒██▒▒▒▒▒▒██▒▒▒▒▒███
+					░░░░░█▒▒▒█░░░█▒▒▒▒▒▒████▒▒▒▒████▒▒▒▒▒▒██
+					░░░█████████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██
+					░░░█▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒▒▒██
+					░██▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒██▒▒▒▒▒▒▒▒▒▒██▒▒▒▒██
+					██▒▒▒███████████▒▒▒▒▒██▒▒▒▒▒▒▒▒██▒▒▒▒▒██
+					█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒████████▒▒▒▒▒▒▒██
+					██▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██
+					░█▒▒▒███████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██
+					░██▒▒▒▒▒▒▒▒▒▒████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
+					░░████████████░░░█████████████████
+			     """)			
         else:
             os.system('cls')
             hangman_text.print_hangman()
@@ -231,3 +258,9 @@ def main():
 	
 if __name__ == "__main__":
     main()
+	
+	
+	
+	
+
+	
