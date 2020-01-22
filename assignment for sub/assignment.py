@@ -1,16 +1,23 @@
-#PYTHON randint FUNCTION : randint(minimum number , maximum number) 
-#take 2 arguments 
-#Return arandom integer between a maximum and minimum number incloud
+# Hangman Game for training 
 import random
-import re
+import re #a regular expression for check_valid_input meathod 
 import os
 from hangman_text import hangman_text
 from hangman_print import hangman_print
 
 def choose_word(file_path, index):
     """
-    A boolean function that returns true if all the letters that make up the secret word are included in the list of letters the user guessed.
-    Otherwise, the function returns false.
+    Receiving Function as Parameters: A string representing a path to a text file that contains spaces separated by words thes word we will use it as secret_word,
+	and an integer representing the location of a particular word in the file.
+	it also built a list that contains words without their duplicates and counts them.
+    The function returns a tuple consisting of two organs in the following order: the number of different words in the file
+	a word in the position obtained as an argument to the function (index).
+	:param file_path : the path for the words file  .
+	:param index : index of word in file.
+	:type file_path : string .
+    :type index : char .
+	: return :  the number of different words in the file a word in the position obtained as an argument to the function.
+	: return type : tuple.
     """
     MY_SPACE = " "
     different_data = []
@@ -23,26 +30,37 @@ def choose_word(file_path, index):
                 different_data.append(word)
     number_of_DWords = len(different_data)
     number_of_AWords = len(all_data)
-    amount_and_word = (number_of_DWords, all_data[(int(index)-1)%number_of_AWords])
+    amount_and_word = (number_of_DWords, all_data[(int(index) - 1) % number_of_AWords]) # we use 
     words_in_file.close()
     return amount_and_word
     		
 def check_valid_input(letter_guessed, old_letters_guessed):
-#the second and thred condution
-    pattern = re.compile('[^A-Za-z]+')	
+    """
+	A boolean function that receives a character and a footer that the user has previously guessed.
+	The function checks two things: the correctness of the input and whether it is legal to guess this letter,
+	returns true or false accordingly.
+	:param letter_guessed : the letter that guessed by the user .
+	:param old_letters_guessed : The list holds the letters the player has guessed so far.
+	:type letter_guessed : char .
+    :type old_letters_guessed : list .
+	: return :  TRUE or FALSE.
+	: return type : boolean.
+    """
+    #the second and thred condution
+    pattern = re.compile('[^A-Za-z]+')	# we use a regular expression for any letter
     if(len(letter_guessed) > 1) and (pattern.search(letter_guessed)):
-        print('E3 : Non-English character and letter string containing more than one character ')
+        print(' E3 : Non-English character and letter string containing more than one character ')
         return False
-#If the player entered a letter string containing more than one character, print the string "E1".
+    #If the player entered a letter string containing more than one character, print the string "E1".
     elif(len(letter_guessed) > 1):
-        print('E1 : Letter string containing more than one character  ')
+        print(' E1 : Letter string containing more than one character  ')
         return False
-#If the player has entered a non-English character check by regular expression print the string "E2".
+    #If the player has entered a non-English character check by regular expression print the string "E2".
     elif (pattern.match(letter_guessed)):
-        print("E2 : Non-English character ")
+        print(" E2 : Non-English character ")
         return False
     elif (letter_guessed in old_letters_guessed):
-        print(letter_guessed.lower() + ' : Already guessing ')
+        print( " [ " + letter_guessed.lower() + ' ] : Already guessing ')
         return False
     else:
         print(letter_guessed.lower())
@@ -50,12 +68,25 @@ def check_valid_input(letter_guessed, old_letters_guessed):
 		
 		
 def try_update_letter_guessed(letter_guessed, old_letters_guessed):
+    """ 
+   	The function uses the check_valid_input function to know if the character is invalid and not previously guessed or the character is invalid and / or already in the guess list.
+    If the character is invalid or has already guessed the character in the past, the function prints the character X (as a big letter), 
+	below it the list of letters already guessed and returns false.
+	If the character is incorrect and has not been guessed before - the function adds the character to the guess list and returns true.
+	:param letter_guessed : the letter that guessed by the user .
+	:param old_letters_guessed : The list holds the letters the player has guessed so far.
+	:type letter_guessed : char .
+    :type old_letters_guessed : list .
+	:return :  TRUE or FALSE.
+	:return type : boolean.
+	 
+    """
     if(check_valid_input(letter_guessed, old_letters_guessed)):
         old_letters_guessed.append(letter_guessed)
         print(old_letters_guessed)
         return True
     else:
-        print("X\n" + 'guessed letters until now :')
+        print(" X\n" + 'guessed letters until now :')
         print( ' =' + '='*len(old_letters_guessed)*5 + '\n|| ' + ' -> '.join(sorted(old_letters_guessed))+ ' ||\n' + ' =' + '='*5*len(old_letters_guessed))
         return False
             		
@@ -65,6 +96,12 @@ def show_hidden_word(secret_word, old_letters_guessed):
     This is a function that returns a string consisting of letters and underscores. 
     The string displays the letters from the old_letters_guessed list that are in the secret_word string in their respective positions, 
     and the rest of the letters in the string (which the player has not yet guessed) as underscores.
+	:param secret_word : That's the word the user has to guess .
+    :param old_letters_guessed : The list holds the letters the player has guessed so far.
+    :type secret_word : string .
+    :type old_letters_guessed : list .
+	:return show_hidden : show_hidden is a string consisting of letters and underscores.
+	:return type : string . 
     """
     show_hidden = '_ ' * len(secret_word)
     for i in range(len(secret_word)):
@@ -97,6 +134,22 @@ def check_win(secret_word, old_letters_guessed):
     
 	
 def print_function(word_path = 'c:', index_word = -1, MAX_TRIES = 7, old_letters_guessed = 'X', player_guess = 'none',num_of_tries = 7 ):
+    """
+	this function just for print what we need every time .
+	:param word_path : That's the word the user has to guess .
+    :param old_letters_guessed : The list holds the letters the player has guessed so far.
+	:param index : index of word in file.
+	:param MAX_TRIES : max tries.
+	:param player_guess : user so correct gusse so fare.
+	:param num_of_tries : The number represents the number of failed attempts by the user so far.
+	:type word_path : string .
+    :type old_letters_guessed : list .
+	:type index : char .
+    :type MAX_TRIES : int .
+	:type player_guess : string .
+    :type num_of_tries : int .
+	:return: none
+	"""
     hangman_text.print_hangman()
     print(MAX_TRIES)
     print("Please Enter Docminet Path : " + word_path )
@@ -108,6 +161,7 @@ def print_function(word_path = 'c:', index_word = -1, MAX_TRIES = 7, old_letters
 
 def main():
     while(1):
+	    #The variable holds the pictures of the hangmann in each of the situations.
         hangman_print_doll	= {
 	        0: hangman_print.hangman_print0,
             1: hangman_print.hangman_print1,
@@ -119,22 +173,21 @@ def main():
             7: hangman_print.hangman_print7
         }					
         hangman_text.print_hangman()
-        MAX_TRIES = 7 #random.randint(5, 10)
-        num_of_tries = 0 # counter for fieal gusses
+        MAX_TRIES = 7    # random.randint(5, 10)
+        num_of_tries = 0 # The number represents the number of failed attempts by the user so far.
         letters_guessed = []
         hangman_print_state = 0
         print(MAX_TRIES)
-        word_path = input("Please Enter Docminet Path : ")
+        word_path = input("Please Enter Docminet Path by using [\\\\] between folders : ")
         index_word = input("Please Enter index for word in file :  ")
         tuple_of_amount_word = choose_word(word_path , index_word)
-        print(tuple_of_amount_word)
+        print(tuple_of_amount_word + "<===== ||  this row for the checker to see what the function returns is correctly and it will delete the next iteration|| ")  # for checker
         secret_word = tuple_of_amount_word[1]
         print ('guesse the word : ' + len(secret_word)*'_ ')
         while (num_of_tries != MAX_TRIES):
             hangman_print_doll[hangman_print_state]()
             letter_guessed_by_player = input("Please Guess a letter: ")
             letter_guessed_by_player_lowerLitr = letter_guessed_by_player.lower()
-            print(letter_guessed_by_player_lowerLitr)
             legail = try_update_letter_guessed(letter_guessed_by_player_lowerLitr, letters_guessed)
             while(legail == False ):
                 print('====>illegail input please try agine<====')
@@ -161,11 +214,11 @@ def main():
             print('THE SECRET WORD WAS [ ' + secret_word + ' ] AND YOUR GUESSED WAS  [ ' + player_guess + "]")
             hangman_print_doll[7]()
 		
-        more_round = input("DO YOU WANT TO PLAY AGINE ?? [Y\\N] ")
+        more_round = input("DO YOU WANT TO PLAY AGAIN ?? [Y\\N] ")
         if (more_round == 'n' or more_round =='N'):
             print("""
 			******************************************************
-			***** GOOD BYE, WE WILL BY HAPPY TO SEE YOU AGINE ****
+			***** GOOD BYE, WE WILL BY HAPPY TO SEE YOU AGAIN ****
 			******************************************************	
 			""")
             input("please press enter to exit... ")
